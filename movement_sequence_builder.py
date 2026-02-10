@@ -25,7 +25,6 @@ Author: Created for pi-top robotics platform
 
 from time import sleep
 from pitop.robotics import DriveController
-import math
 
 
 class MovementSequenceBuilder:
@@ -49,8 +48,8 @@ class MovementSequenceBuilder:
     # This prevents "too fast for current speed" errors
     TIME_SAFETY_MARGIN = 1.2  # multiply calculated time by this factor
     
-    def __init__(self, left_motor_port="M1", right_motor_port="M2"):
-        """Initialize the robot controller."""
+    def __init__(self, left_motor_port: str = "M1", right_motor_port: str = "M2") -> None:
+        """Initialize the robot controller with specified motor ports."""
         self.drive = DriveController(
             left_motor_port=left_motor_port,
             right_motor_port=right_motor_port
@@ -69,17 +68,17 @@ class MovementSequenceBuilder:
     
     # ==================== UNIT CONVERSION ====================
     
-    def inches_to_meters(self, inches):
+    def inches_to_meters(self, inches: float) -> float:
         """Convert inches to meters."""
         return inches * self.INCHES_TO_METERS
     
-    def meters_to_inches(self, meters):
+    def meters_to_inches(self, meters: float) -> float:
         """Convert meters to inches."""
         return meters * self.METERS_TO_INCHES
     
     # ==================== TIMING & CONSTRAINT CALCULATIONS ====================
     
-    def calculate_linear_time(self, distance_inches, speed_factor):
+    def calculate_linear_time(self, distance_inches: float, speed_factor: float) -> float:
         """
         Calculate time required for linear movement.
         
@@ -119,7 +118,7 @@ class MovementSequenceBuilder:
         
         return time_final
     
-    def calculate_rotational_time(self, angle_degrees, speed_factor):
+    def calculate_rotational_time(self, angle_degrees: float, speed_factor: float) -> float:
         """
         Calculate time required for rotational movement.
         
@@ -163,8 +162,12 @@ class MovementSequenceBuilder:
     
     # ==================== USER INPUT ====================
     
-    def get_direction(self):
-        """Prompt user for movement direction."""
+    def get_direction(self) -> str:
+        """Prompt user for movement direction.
+        
+        Returns:
+            str: Direction name ('forward', 'backward', 'left', 'right', 'rotate')
+        """
         while True:
             print("\n" + "-" * 60)
             print("What direction would you like to go?")
@@ -190,8 +193,12 @@ class MovementSequenceBuilder:
             else:
                 print("❌ Invalid choice. Please try again.")
     
-    def get_speed(self):
-        """Prompt user for movement speed."""
+    def get_speed(self) -> float:
+        """Prompt user for movement speed.
+        
+        Returns:
+            float: Speed factor between MIN_SPEED_FACTOR and 1.0
+        """
         while True:
             print("\n" + "-" * 60)
             print("How fast would you like to go for this movement?")
@@ -213,8 +220,15 @@ class MovementSequenceBuilder:
             except ValueError:
                 print("❌ Invalid input. Please enter a number.")
     
-    def get_distance(self, direction):
-        """Prompt user for movement distance or rotation angle."""
+    def get_distance(self, direction: str) -> float:
+        """Prompt user for movement distance or rotation angle.
+        
+        Args:
+            direction: Type of movement ('forward', 'backward', 'left', 'right', 'rotate')
+        
+        Returns:
+            float: Distance in inches (or angle in degrees if rotating)
+        """
         while True:
             print("\n" + "-" * 60)
             if direction == 'rotate':
@@ -249,8 +263,12 @@ class MovementSequenceBuilder:
             except ValueError:
                 print("❌ Invalid input. Please enter a number.")
     
-    def add_movement(self):
-        """Add a movement to the sequence through interactive prompts."""
+    def add_movement(self) -> None:
+        """Add a movement to the sequence through interactive prompts.
+        
+        Guides user through direction, speed, and distance selection,
+        then appends the movement to the sequence and displays confirmation.
+        """
         print("\n" + "=" * 60)
         print(f"Creating Movement #{len(self.movements) + 1}")
         print("=" * 60)
@@ -277,8 +295,13 @@ class MovementSequenceBuilder:
     
     # ==================== DISPLAY ====================
     
-    def display_movement(self, movement, index):
-        """Display a single movement with timing information."""
+    def display_movement(self, movement: dict, index: int) -> None:
+        """Display a single movement with timing information.
+        
+        Args:
+            movement: Movement dict with 'direction', 'speed', 'distance' keys
+            index: Movement sequence number
+        """
         direction = movement['direction']
         speed = movement['speed']
         distance = movement['distance']
@@ -297,8 +320,11 @@ class MovementSequenceBuilder:
             print(f"  Distance: {distance} inches ({distance_meters:.3f} m)")
             print(f"  Estimated time: {time_required:.2f}s")
     
-    def display_sequence(self):
-        """Display the entire movement sequence with timing summary."""
+    def display_sequence(self) -> None:
+        """Display the entire movement sequence with timing summary.
+        
+        Shows all movements in sequence with individual and total timing estimates.
+        """
         if not self.movements:
             print("\n📋 No movements in sequence yet.")
             return
@@ -327,7 +353,7 @@ class MovementSequenceBuilder:
     
     # ==================== EXECUTION ====================
     
-    def execute_movement(self, movement, index):
+    def execute_movement(self, movement: dict, index: int) -> None:
         """
         Execute a single movement with proper timing.
         
@@ -388,8 +414,11 @@ class MovementSequenceBuilder:
             self.drive.stop()
             raise
     
-    def execute_sequence(self):
-        """Execute the entire movement sequence safely."""
+    def execute_sequence(self) -> None:
+        """Execute the entire movement sequence safely.
+        
+        Runs all movements in order with error handling and stops motors on completion.
+        """
         if not self.movements:
             print("\n❌ No movements to execute! Please create a sequence first.")
             return
@@ -417,8 +446,11 @@ class MovementSequenceBuilder:
         # Stop motors to be safe
         self.drive.stop()
     
-    def build_sequence(self):
-        """Interactive loop to build movement sequence."""
+    def build_sequence(self) -> None:
+        """Interactive loop to build movement sequence.
+        
+        Allows user to add multiple movements until they choose to finish.
+        """
         print("\n" + "=" * 60)
         print("Let's build your movement sequence!")
         print("=" * 60)
@@ -437,13 +469,16 @@ class MovementSequenceBuilder:
                 else:
                     print("❌ Please answer 'yes' or 'no'")
     
-    def clear_sequence(self):
+    def clear_sequence(self) -> None:
         """Clear all movements from the sequence."""
         self.movements = []
         print("\n✓ Sequence cleared!")
     
-    def run(self):
-        """Main program loop."""
+    def run(self) -> None:
+        """Main program loop.
+        
+        Orchestrates sequence building, display, and execution with user interaction.
+        """
         # Build the sequence
         self.build_sequence()
         
@@ -498,8 +533,11 @@ class MovementSequenceBuilder:
             print("\n✓ Motors stopped. Program ended safely.")
 
 
-def main():
-    """Main entry point."""
+def main() -> None:
+    """Main entry point.
+    
+    Initializes MovementSequenceBuilder and runs the interactive program.
+    """
     try:
         builder = MovementSequenceBuilder(
             left_motor_port="M1",

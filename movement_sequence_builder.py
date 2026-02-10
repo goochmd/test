@@ -12,7 +12,6 @@ Author: Created for pi-top robotics platform
 
 from time import sleep
 from pitop.robotics import DriveController
-from pitop.keyboard import KeyboardButton
 
 
 class MovementSequenceBuilder:
@@ -303,12 +302,9 @@ class MovementSequenceBuilder:
         
         try:
             # Create keyboard button for spacebar
-            spacebar = KeyboardButton("space")
-            esc_key = KeyboardButton("esc")
             
-            # Callback for spacebar press
-            def on_spacebar_press():
-                print("\n🚀 SPACEBAR PRESSED - Starting sequence execution!\n")
+            temp = input("Press space for yippee")
+            if temp==" ":
                 self.execute_sequence()
                 self.sequence_executed = True
                 
@@ -326,16 +322,6 @@ class MovementSequenceBuilder:
                         break
                     else:
                         print("❌ Please answer 'yes' or 'no'")
-            
-            # Callback for ESC press
-            def on_esc_press():
-                print("\n❌ ESC pressed - Exiting without running sequence.")
-                print("👋 Goodbye!")
-                self.keep_running = False
-            
-            # Set up button callbacks
-            spacebar.when_pressed = on_spacebar_press
-            esc_key.when_pressed = on_esc_press
             
             # Keep the program running with a simple loop
             print("\n⌨️  Keyboard controls active...")

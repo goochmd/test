@@ -46,7 +46,7 @@ class MovementSequenceBuilder:
     
     # Time safety margin: add to calculated time to ensure motor has budget
     # This prevents "too fast for current speed" errors
-    TIME_SAFETY_MARGIN = 1.2  # multiply calculated time by this factor
+    TIME_SAFETY_MARGIN = 1.5  # multiply calculated time by this factor
     
     def __init__(self, left_motor_port: str = "M3", right_motor_port: str = "M0") -> None:
         """Initialize the robot controller with specified motor ports."""
@@ -99,7 +99,7 @@ class MovementSequenceBuilder:
             - Limits maximum execution time
         """
         # Clamp speed factor to valid range
-        speed_factor = max(self.MIN_SPEED_FACTOR, min(1.0, speed_factor))
+        speed_factor = max(self.MIN_SPEED_FACTOR, min(.9, speed_factor))
         
         # Calculate velocity at this speed factor
         velocity_ms = speed_factor * self.MAX_LINEAR_VELOCITY_MS

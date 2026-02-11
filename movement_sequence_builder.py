@@ -48,7 +48,7 @@ class MovementSequenceBuilder:
     # This prevents "too fast for current speed" errors
     TIME_SAFETY_MARGIN = 1.2  # multiply calculated time by this factor
     
-    def __init__(self, left_motor_port: str = "M1", right_motor_port: str = "M2") -> None:
+    def __init__(self, left_motor_port: str = "M3", right_motor_port: str = "M0") -> None:
         """Initialize the robot controller with specified motor ports."""
         self.drive = DriveController(
             left_motor_port=left_motor_port,

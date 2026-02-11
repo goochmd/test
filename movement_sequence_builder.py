@@ -143,7 +143,7 @@ def move_forward(drive, speed_percent, distance_inches):
     print(f"\n➜ Moving forward {distance_inches} inches at {speed_percent}% speed...")
     
     try:
-        drive.forward(distance_meters, speed_factor)
+        drive.forward(speed_factor, distance=distance_meters)
         print(f"✓ Movement complete")
         time.sleep(0.5)
     except Exception as e:
@@ -167,7 +167,7 @@ def move_backward(drive, speed_percent, distance_inches):
     print(f"\n➜ Moving backward {distance_inches} inches at {speed_percent}% speed...")
     
     try:
-        drive.backward(distance_meters, speed_factor)
+        drive.backward(speed_factor, distance=distance_meters)
         print(f"✓ Movement complete")
         time.sleep(0.5)
     except Exception as e:
@@ -191,7 +191,7 @@ def rotate_in_place(drive, speed_percent, angle_degrees):
     print(f"\n➜ Rotating {angle_degrees} degrees at {speed_percent}% speed...")
     
     try:
-        drive.rotate(angle_radians, speed_factor)
+        drive.rotate(angle_radians, max_speed_factor=speed_factor)
         print(f"✓ Rotation complete")
         time.sleep(0.5)
     except Exception as e:

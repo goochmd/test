@@ -373,27 +373,26 @@ class MovementSequenceBuilder:
                 distance_meters = self.inches_to_meters(distance)
                 time_to_take = self.calculate_linear_time(distance, speed)
                 print(f"  → {distance} inches at {speed*100:.0f}% speed ({time_to_take:.2f}s)")
-                self.drive.forward(speed_factor=speed, distance=distance_meters)
+                self.drive.forward(speed_factor=speed, time_to_take=time_to_take)
                 
             elif direction == 'backward':
                 distance_meters = self.inches_to_meters(distance)
                 time_to_take = self.calculate_linear_time(distance, speed)
                 print(f"  ← {distance} inches at {speed*100:.0f}% speed ({time_to_take:.2f}s)")
-                self.drive.backward(speed_factor=speed, distance=distance_meters)
+                self.drive.backward(speed_factor=speed, time_to_take=time_to_take)
                 
             elif direction == 'left':
                 distance_meters = self.inches_to_meters(distance)
                 time_to_take = self.calculate_linear_time(distance, speed)
                 print(f"  ↶ {distance} inches at {speed*100:.0f}% speed ({time_to_take:.2f}s)")
                 # Turn radius of 0.3m provides tight turns
-                self.drive.left(speed_factor=speed, turn_radius=0.3, distance=distance_meters)
-                
+                self.drive.left(speed_factor=speed, turn_radius=0.3, time_to_take=time_to_take)
             elif direction == 'right':
                 distance_meters = self.inches_to_meters(distance)
                 time_to_take = self.calculate_linear_time(distance, speed)
                 print(f"  ↷ {distance} inches at {speed*100:.0f}% speed ({time_to_take:.2f}s)")
                 # Turn radius of 0.3m provides tight turns
-                self.drive.right(speed_factor=speed, turn_radius=0.3, distance=distance_meters)
+                self.drive.right(speed_factor=speed, turn_radius=0.3, time_to_take=time_to_take)
                 
             elif direction == 'rotate':
                 time_to_take = self.calculate_rotational_time(distance, speed)

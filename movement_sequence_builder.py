@@ -203,7 +203,7 @@ class MovementSequenceBuilder:
             print("\n" + "-" * 60)
             print("How fast would you like to go for this movement?")
             print(f"  Range: {self.MIN_SPEED_FACTOR*100:.0f}-100 percent")
-            print("  Examples: 30, 50, 75, 100")
+            print("  USE 30 FOR NOW")
             print("-" * 60)
             
             speed_input = input("Enter speed percentage: ").strip()
